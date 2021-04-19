@@ -4,20 +4,7 @@
         <div class="flex flex-col p-4 m-px bg-white rounded-xl">
             <h1 class="mb-8 text-4xl text-gray-900">Cully's Domains</h1>
             <ul class="space-y-5 font-mono text-gray-700">
-                <li>altdelight.com</li>
-                <li>cinch.run</li>
-                <li>drinkdrop.app</li>
-                <li>foodfacade.com</li>
-                <li>nubs.in</li>
-                <li>nuzzle.in</li>
-                <li>parse.one</li>
-                <li>pkg.tools</li>
-                <li>silo.pw</li>
-                <li>tablewhiskey.glass</li>
-                <li>toddy.house</li>
-                <li>triage.support</li>
-                <li>via.pub</li>
-                <li>volii.app</li>
+                <li v-for="domain in state.domains">{{domain}}</li>
             </ul>
         </div>
       </div>
@@ -28,7 +15,14 @@
 </template>
 
 <script setup>
-
+    import { onMounted, reactive } from 'vue';
+    const state = reactive({
+        domains: []
+    })
+    onMounted( async () => {
+      const response = await fetch("https://domains.cully.workers.dev");
+      state.domains = await response.json().then(data => data.sort());
+    });
 </script>
 
 <style>
